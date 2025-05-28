@@ -1,3 +1,6 @@
+//Eric Li
+//May 18th 2025
+
 //import
 import java.awt.Robot;
 
@@ -6,7 +9,7 @@ Robot rbt;
 boolean skipFrame;
 
 //game variables
-boolean wkey, akey, skey, dkey;
+boolean wkey, akey, skey, dkey,spacekey,shiftkey;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
@@ -44,6 +47,13 @@ color purpblue = #7303fc;
 int gridSize;
 PImage map;
 
+//texture variables
+PImage grassbs;
+PImage grassbt;
+PImage grassbb;
+PImage spwoodbt;
+PImage spwoodbs;
+
 void setup () {
   fullScreen(P3D);
   textureMode(NORMAL);
@@ -63,19 +73,27 @@ void setup () {
     rbt = new Robot();
   }
   catch (Exception e) {
-      e.printStackTrace();
+    e.printStackTrace();
   }
   skipFrame = false;
-  
+
   //initialize map
   map = loadImage("map.png");
-  gridSize = 100;
+  gridSize = 10000 / map.width; // Adjust gridSize based on map width
+  map = loadImage("map.png");
+  
+  //load textures
+  grassbs = loadImage("grass_block_side.png");
+  grassbt = loadImage("Grass_Block_Top_C.png");
+  grassbb = loadImage("dirt.png");
+  spwoodbt  = loadImage("spruce_log_top.png");
+  spwoodbs  = loadImage("spruce_log.png");
 }
 
 
 void draw () {
-   background(calculateBackgroundColor());
-  camera(eyeX,eyeY,eyeZ,focusX,focusY,focusZ,tiltX,tiltY,tiltZ);
+  background(calculateBackgroundColor());
+  camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
   drawFloor();
   drawFocalPoint();
   controlCamera();
@@ -83,17 +101,19 @@ void draw () {
 }
 
 void drawMap () {
-  for (int x = 0; x < map.width;x++) {
-    for (int y = 0; y < map.height;y++) {
-    color c = map.get(x,y);
-    if (c !=white) {
-      pushMatrix();
-      fill(c);
-      stroke(100);
-      translate(x*gridSize-2000,height/2,y*gridSize-2000);
-      box(gridSize,height,gridSize);
-      popMatrix();
-    }
+  for (int x = 0; x < map.width; x++) {
+    for (int y = 0; y < map.height; y++) {
+      color c = map.get(x, y);
+      if (c != white) {
+        int i = 0;
+        int h = height;
+        while(i <= 4) {
+        texturedCube(x*gridSize-5000,h,y*gridSize-5000,spwoodbt,spwoodbs,gridSize);
+        h = h - gridSize;
+        i ++;
+        }
+      }
+      texturedCube(x*gridSize-5000,height,y*gridSize-5000,grassbt,grassbb,grassbs,gridSize);
     }
   }
 }
@@ -119,62 +139,68 @@ color calculateBackgroundColor() {
 
 void drawFocalPoint() {
   pushMatrix();
-  translate(focusX,focusY,focusZ);
+  translate(focusX, focusY, focusZ);
   sphere(5);
   popMatrix();
 }
 
 void drawFloor () {
   stroke(255);
-  for (int x = -2000;x<= 2000;x=x+100) {
-    line(x,height,-2000,x,height,2000);
-    line(-2000,height,x,2000,height,x);
+  // Expand floor grid to 5000x5000
+  for (int x = -5000; x <= 5000; x = x + 100) {
+    line(x, height, -5000, x, height, 5000);
+    line(-5000, height, x, 5000, height, x);
   }
 }
 
 void controlCamera() {
- if (wkey) {
-   eyeX = eyeX + cos(leftRightHeadAngle)*10;
-   eyeZ = eyeZ + sin(leftRightHeadAngle)*10;
- }
- if (skey) {
-   eyeX = eyeX - cos(leftRightHeadAngle)*10;
-   eyeZ = eyeZ - sin(leftRightHeadAngle)*10;
- }
- if (akey) {
-   eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*10;
-   eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*10;
- }
- if (dkey) {
-   eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*10;
-   eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*10;
- }
+  if (wkey) {
+    eyeX = eyeX + cos(leftRightHeadAngle)*10;
+    eyeZ = eyeZ + sin(leftRightHeadAngle)*10;
+  }
+  if (skey) {
+    eyeX = eyeX - cos(leftRightHeadAngle)*10;
+    eyeZ = eyeZ - sin(leftRightHeadAngle)*10;
+  }
+  if (akey) {
+    eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*10;
+    eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*10;
+  }
+  if (dkey) {
+    eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*10;
+    eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*10;
+  }
+  if (spacekey) {
+    eyeY = eyeY - 5;
+  }
+  
+  if (shiftkey) {
+    eyeY = eyeY + 5;
+  }
 
- if (skipFrame == false) {
-   leftRightHeadAngle = leftRightHeadAngle + (mouseX - pmouseX) * 0.005;
-   upDownHeadAngle = upDownHeadAngle + (mouseY - pmouseY) * 0.005;
- }
- 
- if (upDownHeadAngle > PI/2.5) upDownHeadAngle = PI/2.5;
- if (upDownHeadAngle < -PI/2.5) upDownHeadAngle = -PI/2.5;
+  if (skipFrame == false) {
+    leftRightHeadAngle = leftRightHeadAngle + (mouseX - pmouseX) * 0.005;
+    upDownHeadAngle = upDownHeadAngle + (mouseY - pmouseY) * 0.005;
+  }
 
- 
- focusX = eyeX + cos(leftRightHeadAngle)*300;
- focusZ = eyeZ + sin(leftRightHeadAngle)*300;
- focusY = eyeY + tan(upDownHeadAngle)*300;
- 
- if (mouseX < 2) {
-   rbt.mouseMove(width-3,mouseY);
-   skipFrame = true;
- }
- else if (mouseX > width -2) {
-    rbt.mouseMove(3,mouseY);
+  if (upDownHeadAngle > PI/2.5) upDownHeadAngle = PI/2.5;
+  if (upDownHeadAngle < -PI/2.5) upDownHeadAngle = -PI/2.5;
+
+
+  focusX = eyeX + cos(leftRightHeadAngle)*300;
+  focusZ = eyeZ + sin(leftRightHeadAngle)*300;
+  focusY = eyeY + tan(upDownHeadAngle)*300;
+
+  if (mouseX < 2) {
+    rbt.mouseMove(width-3, mouseY);
     skipFrame = true;
- }
- else {
+  } else if (mouseX > width -2) {
+    rbt.mouseMove(3, mouseY);
+    skipFrame = true;
+  } else {
     skipFrame = false;
- }
- println(eyeX,eyeY,eyeZ);
+  }
+  println(eyeX, eyeY, eyeZ);
 }
 
 void keyPressed () {
@@ -182,7 +208,8 @@ void keyPressed () {
   if (key == 'A' || key == 'a' ) akey = true;
   if (key == 'S' || key == 's' ) skey = true;
   if (key == 'D' || key == 'd' ) dkey = true;
-  
+  if (key == ' ')  spacekey = true;
+  if (key == SHIFT) shiftkey = true;
 }
 
 void keyReleased () {
@@ -190,5 +217,6 @@ void keyReleased () {
   if (key == 'A' || key == 'a' ) akey = false;
   if (key == 'S' || key == 's' ) skey = false;
   if (key == 'D' || key == 'd' ) dkey = false;
-  
+  if (key == ' ')  spacekey = false;
+  if (key == SHIFT) shiftkey = false;
 }
