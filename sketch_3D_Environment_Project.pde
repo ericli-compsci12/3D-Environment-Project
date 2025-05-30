@@ -9,7 +9,7 @@ Robot rbt;
 boolean skipFrame;
 
 //game variables
-boolean wkey, akey, skey, dkey,spacekey,shiftkey;
+boolean wkey, akey, skey, dkey,spacekey,shiftkey,sprintkey = false;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
@@ -42,6 +42,8 @@ color grey = #646464;
 color purple = #d303fc;
 //purple blue color rgb(115, 3, 252)
 color purpblue = #7303fc;
+//color treebranch
+color tb = #22B14C;
 
 //Map variables
 int gridSize;
@@ -53,6 +55,7 @@ PImage grassbt;
 PImage grassbb;
 PImage spwoodbt;
 PImage spwoodbs;
+PImage spleaves;
 
 void setup () {
   fullScreen(P3D);
@@ -88,6 +91,7 @@ void setup () {
   grassbb = loadImage("dirt.png");
   spwoodbt  = loadImage("spruce_log_top.png");
   spwoodbs  = loadImage("spruce_log.png");
+  spleaves =  loadImage("spruceleaves.jpg");
 }
 
 
@@ -104,12 +108,63 @@ void drawMap () {
   for (int x = 0; x < map.width; x++) {
     for (int y = 0; y < map.height; y++) {
       color c = map.get(x, y);
-      if (c != white) {
+      if (c == tb) {
         int i = 0;
         int h = height;
         while(i <= 4) {
         texturedCube(x*gridSize-5000,h,y*gridSize-5000,spwoodbt,spwoodbs,gridSize);
         h = h - gridSize;
+        //first floor
+        texturedCube((x-1)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-2)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,height-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,height-4*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+2)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-4*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
+        
+        //second floor
+        texturedCube((x-1)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-2)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,height-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,height-5*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+2)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-5*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-5*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        
+        //third floor
+        texturedCube((x-1)*gridSize-5000,height-6*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,height-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-6*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-6*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        
+        //fourth floor
+        texturedCube((x-1)*gridSize-5000,height-7*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,height-7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,height-7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,height-7*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,height-7*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        
         i ++;
         }
       }
@@ -154,6 +209,7 @@ void drawFloor () {
 }
 
 void controlCamera() {
+  if (!sprintkey) {
   if (wkey) {
     eyeX = eyeX + cos(leftRightHeadAngle)*10;
     eyeZ = eyeZ + sin(leftRightHeadAngle)*10;
@@ -176,6 +232,32 @@ void controlCamera() {
   
   if (shiftkey) {
     eyeY = eyeY + 5;
+  }
+  }
+  else if (sprintkey) {
+    if (wkey) {
+    eyeX = eyeX + cos(leftRightHeadAngle)*40;
+    eyeZ = eyeZ + sin(leftRightHeadAngle)*40;
+  }
+  if (skey) {
+    eyeX = eyeX - cos(leftRightHeadAngle)*40;
+    eyeZ = eyeZ - sin(leftRightHeadAngle)*40;
+  }
+  if (akey) {
+    eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*40;
+    eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*40;
+  }
+  if (dkey) {
+    eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*40;
+    eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*40;
+  }
+  if (spacekey) {
+    eyeY = eyeY - 20;
+  }
+  
+  if (shiftkey) {
+    eyeY = eyeY + 20;
+  }
   }
 
   if (skipFrame == false) {
@@ -209,7 +291,8 @@ void keyPressed () {
   if (key == 'S' || key == 's' ) skey = true;
   if (key == 'D' || key == 'd' ) dkey = true;
   if (key == ' ')  spacekey = true;
-  if (key == SHIFT) shiftkey = true;
+  if (keyCode == SHIFT) shiftkey = true;
+  if (keyCode == CONTROL) sprintkey = true;
 }
 
 void keyReleased () {
@@ -218,5 +301,6 @@ void keyReleased () {
   if (key == 'S' || key == 's' ) skey = false;
   if (key == 'D' || key == 'd' ) dkey = false;
   if (key == ' ')  spacekey = false;
-  if (key == SHIFT) shiftkey = false;
+  if (keyCode == SHIFT) shiftkey = false;
+  if (keyCode == CONTROL) sprintkey = false;
 }
