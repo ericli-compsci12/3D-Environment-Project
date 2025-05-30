@@ -110,60 +110,70 @@ void drawMap () {
       color c = map.get(x, y);
       if (c == tb) {
         int i = 0;
+        float r = random(-1,3);
         int h = height;
+        int hl = height;
         while(i <= 4) {
         texturedCube(x*gridSize-5000,h,y*gridSize-5000,spwoodbt,spwoodbs,gridSize);
         h = h - gridSize;
         //first floor
-        texturedCube((x-1)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-2)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,height-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,height-4*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+2)*gridSize-5000,height-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-4*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-2)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,h-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,hl-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,hl-4*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+2)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-4*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
         
         //second floor
-        texturedCube((x-1)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-2)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,height-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,height-5*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+2)*gridSize-5000,height-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-5*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-5*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-2)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,hl-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,hl-5*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+2)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-5*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-5*gridSize,(y)*gridSize-5000,spleaves,gridSize);
         
         //third floor
-        texturedCube((x-1)*gridSize-5000,height-6*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,height-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-6*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-6*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-6*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,hl-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl-6*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl-6*gridSize,(y)*gridSize-5000,spleaves,gridSize);
         
         //fourth floor
-        texturedCube((x-1)*gridSize-5000,height-7*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,height-7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,height-7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,height-7*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,height-7*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x-1)*gridSize-5000,hl -7*gridSize,y*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl -7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube(x*gridSize-5000,hl -7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl -7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl -7*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        
+        //fifh floor
+        texturedCube((x)*gridSize-5000,hl -8*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x+1)*gridSize-5000,hl -8*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl -8*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
+        texturedCube((x)*gridSize-5000,hl -8*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
+        //sixth floor
+        texturedCube((x)*gridSize-5000,hl -9*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        
+        //seventh floor
+        texturedCube((x)*gridSize-5000,hl -10*gridSize,(y)*gridSize-5000,spleaves,gridSize);
+        
         
         i ++;
         }
