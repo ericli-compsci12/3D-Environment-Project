@@ -9,7 +9,7 @@ Robot rbt;
 boolean skipFrame;
 
 //game variables
-boolean wkey, akey, skey, dkey,spacekey,shiftkey,sprintkey = false;
+boolean wkey, akey, skey, dkey, spacekey, shiftkey, sprintkey = false;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
@@ -57,6 +57,9 @@ PImage spwoodbt;
 PImage spwoodbs;
 PImage spleaves;
 
+// Tree height 
+int[][] treeHeights;
+
 void setup () {
   fullScreen(P3D);
   textureMode(NORMAL);
@@ -92,6 +95,19 @@ void setup () {
   spwoodbt  = loadImage("spruce_log_top.png");
   spwoodbs  = loadImage("spruce_log.png");
   spleaves =  loadImage("spruceleaves.jpg");
+  
+  
+  treeHeights = new int[map.width][map.height];
+  for (int x = 0; x < map.width; x++) {
+    for (int y = 0; y < map.height; y++) {
+      color c = map.get(x, y);
+      if (c == tb) {
+        treeHeights[x][y] = (int)random(3, 8); // 3-7 blocks
+      } else {
+        treeHeights[x][y] = 0; // No tree
+      }
+    }
+  }
 }
 
 
@@ -108,77 +124,41 @@ void drawMap () {
   for (int x = 0; x < map.width; x++) {
     for (int y = 0; y < map.height; y++) {
       color c = map.get(x, y);
+      // Draw grass block for all positions
+      texturedCube(x*gridSize-5000, height, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
+      
       if (c == tb) {
-        int i = 0;
-        float r = random(-1,3);
-        int h = height;
-        int hl = height;
-        while(i <= 4) {
-        texturedCube(x*gridSize-5000,h,y*gridSize-5000,spwoodbt,spwoodbs,gridSize);
-        h = h - gridSize;
-        //first floor
-        texturedCube((x-1)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-2)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,h-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,hl-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,hl-4*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,hl-4*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+2)*gridSize-5000,hl-4*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-4*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-4*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
+        // Get precomputed tree height
+        int trunkHeight = treeHeights[x][y];
+        float topY = height - (trunkHeight - 1) * gridSize;
         
-        //second floor
-        texturedCube((x-1)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-2)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,hl-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,hl-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,hl-5*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,hl-5*gridSize,(y-2)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+2)*gridSize-5000,hl-5*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-5*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-5*gridSize,(y+2)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-5*gridSize,(y)*gridSize-5000,spleaves,gridSize);
-        
-        //third floor
-        texturedCube((x-1)*gridSize-5000,hl-6*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,hl-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x-1)*gridSize-5000,hl-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,hl-6*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl-6*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-6*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl-6*gridSize,(y)*gridSize-5000,spleaves,gridSize);
-        
-        //fourth floor
-        texturedCube((x-1)*gridSize-5000,hl -7*gridSize,y*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl -7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube(x*gridSize-5000,hl -7*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl -7*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl -7*gridSize,(y)*gridSize-5000,spleaves,gridSize);
-        
-        //fifh floor
-        texturedCube((x)*gridSize-5000,hl -8*gridSize,(y)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x+1)*gridSize-5000,hl -8*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl -8*gridSize,(y-1)*gridSize-5000,spleaves,gridSize);
-        texturedCube((x)*gridSize-5000,hl -8*gridSize,(y+1)*gridSize-5000,spleaves,gridSize);
-        //sixth floor
-        texturedCube((x)*gridSize-5000,hl -9*gridSize,(y)*gridSize-5000,spleaves,gridSize);
-        
-        //seventh floor
-        texturedCube((x)*gridSize-5000,hl -10*gridSize,(y)*gridSize-5000,spleaves,gridSize);
-        
-        
-        i ++;
+        // Draw trunk
+        for (int i = 0; i < trunkHeight; i++) {
+          float yPos = height - i * gridSize;
+          texturedCube(x*gridSize-5000, yPos, y*gridSize-5000, spwoodbt, spwoodbs, gridSize);
         }
+        
+        // Draw leaves layers relative to top of trunk
+        // First layer (at trunk top)
+        drawLeavesLayer(x, y, topY, gridSize);
+        // Second layer (1 block above trunk top)
+        drawLeavesLayer(x, y, topY - gridSize, gridSize);
+        // Third layer (2 blocks above trunk top)
+        drawLeavesLayer(x, y, topY - 2 * gridSize, gridSize);
+        // Fourth layer (3 blocks above trunk top - single block)
+        texturedCube(x*gridSize-5000, topY - 3 * gridSize, y*gridSize-5000, spleaves, gridSize);
       }
-      texturedCube(x*gridSize-5000,height,y*gridSize-5000,grassbt,grassbb,grassbs,gridSize);
+    }
+  }
+}
+
+void drawLeavesLayer(int x, int y, float layerY, float size) {
+  // Draw a cross pattern of leaves
+  for (int dx = -1; dx <= 1; dx++) {
+    for (int dz = -1; dz <= 1; dz++) {
+      // Skip corners to create cross pattern
+      if (abs(dx) == 1 && abs(dz) == 1) continue;
+      texturedCube((x+dx)*gridSize-5000, layerY, (y+dz)*gridSize-5000, spleaves, size);
     }
   }
 }
