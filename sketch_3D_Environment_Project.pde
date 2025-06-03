@@ -44,6 +44,18 @@ color purple = #d303fc;
 color purpblue = #7303fc;
 //color treebranch
 color tb = #22B14C;
+//color dirt
+color dt = #880015;
+//color dirt2
+color dt2 = #880014;
+//color dirt 3
+color dt3 = #880013;
+//color dirt 4
+color dt4 = #880012; 
+//color rock
+color st = #C3C3C3;
+//color  berrry
+color br = #ED1C24;
 
 //Map variables
 int gridSize;
@@ -56,6 +68,8 @@ PImage grassbb;
 PImage spwoodbt;
 PImage spwoodbs;
 PImage spleaves;
+PImage Stones;
+PImage Berry;
 
 // Tree height 
 int[][] treeHeights;
@@ -95,6 +109,8 @@ void setup () {
   spwoodbt  = loadImage("spruce_log_top.png");
   spwoodbs  = loadImage("spruce_log.png");
   spleaves =  loadImage("spruceleaves.jpg");
+  Stones =  loadImage("stone.png");
+  Berry =  loadImage("berry bush.png");
   
   
   treeHeights = new int[map.width][map.height];
@@ -102,7 +118,7 @@ void setup () {
     for (int y = 0; y < map.height; y++) {
       color c = map.get(x, y);
       if (c == tb) {
-        treeHeights[x][y] = (int)random(3, 8); // 3-7 blocks
+        treeHeights[x][y] = (int)random(3, 8);
       } else {
         treeHeights[x][y] = 0; // No tree
       }
@@ -139,24 +155,56 @@ void drawMap () {
         }
         
         // Draw leaves layers relative to top of trunk
-        // First layer (at trunk top)
+        // First layer 
         drawLeavesLayer(x, y, topY, gridSize);
-        // Second layer (1 block above trunk top)
+        // Second layer
         drawLeavesLayer(x, y, topY - gridSize, gridSize);
-        // Third layer (2 blocks above trunk top)
+        // Third layer 
         drawLeavesLayer(x, y, topY - 2 * gridSize, gridSize);
-        // Fourth layer (3 blocks above trunk top - single block)
+        // Fourth layer
         texturedCube(x*gridSize-5000, topY - 3 * gridSize, y*gridSize-5000, spleaves, gridSize);
+      }
+      
+      if (c == dt) {        
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
+      }
+      
+      if (c == dt2) {        
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,grassbb, gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
+      }
+      
+      if (c == dt3) {        
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,grassbb, gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,grassbb, gridSize);
+         texturedCube(x*gridSize-5000, height - gridSize*3, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
+      }
+      
+      if (c == dt4) {        
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,grassbb, gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*3, y*gridSize-5000, grassbb,gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*4, y*gridSize-5000, grassbb,gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*5, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
+        
+      }
+      
+      if (c == st) {
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
+      }
+      
+      if (c == br) {
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Berry, gridSize);
       }
     }
   }
 }
 
 void drawLeavesLayer(int x, int y, float layerY, float size) {
-  // Draw a cross pattern of leaves
+ 
   for (int dx = -1; dx <= 1; dx++) {
     for (int dz = -1; dz <= 1; dz++) {
-      // Skip corners to create cross pattern
+     
       if (abs(dx) == 1 && abs(dz) == 1) continue;
       texturedCube((x+dx)*gridSize-5000, layerY, (y+dz)*gridSize-5000, spleaves, size);
     }
@@ -191,7 +239,6 @@ void drawFocalPoint() {
 
 void drawFloor () {
   stroke(255);
-  // Expand floor grid to 5000x5000
   for (int x = -5000; x <= 5000; x = x + 100) {
     line(x, height, -5000, x, height, 5000);
     line(-5000, height, x, 5000, height, x);
