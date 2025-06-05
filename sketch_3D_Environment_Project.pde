@@ -54,8 +54,14 @@ color dt3 = #880013;
 color dt4 = #880012; 
 //color rock
 color st = #C3C3C3;
+//color rock2
+color st2 = #C3C3C2;
 //color  berrry
 color br = #ED1C24;
+//color hole
+color ho = #000003;
+//color hole2
+color ho2 = #000002;
 
 //Map variables
 int gridSize;
@@ -70,9 +76,13 @@ PImage spwoodbs;
 PImage spleaves;
 PImage Stones;
 PImage Berry;
+PImage bedrock;
 
 // Tree height 
 int[][] treeHeights;
+
+//berry position
+ArrayList<PVector> berryBushes = new ArrayList<>();
 
 void setup () {
   fullScreen(P3D);
@@ -111,6 +121,7 @@ void setup () {
   spleaves =  loadImage("spruceleaves.jpg");
   Stones =  loadImage("stone.png");
   Berry =  loadImage("berry bush.png");
+  bedrock =  loadImage("Bedrock.png");
   
   
   treeHeights = new int[map.width][map.height];
@@ -126,25 +137,71 @@ void setup () {
   }
 }
 
-
-void draw () {
+void draw() {
   background(calculateBackgroundColor());
   camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
-  drawFloor();
+  
+  // Clear previous frame's bushes
+  berryBushes.clear();
+  
+  // Draw opaque elements first
+  //drawFloor();
+  drawMap();
+  
+  // Draw transparent elements last
+  drawBerryBushes();
+  
+  // Draw focal point (optional)
   drawFocalPoint();
   controlCamera();
-  drawMap();
+  
+  lights();
+}
+
+void drawBerryBushes() {
+  blendMode(BLEND);
+  hint(DISABLE_DEPTH_MASK);
+  
+  // Sort bushes back-to-front relative to camera
+  berryBushes.sort((b1, b2) -> 
+    Float.compare(dist(eyeX, eyeY, eyeZ, b2.x, b2.y, b2.z),
+                  dist(eyeX, eyeY, eyeZ, b1.x, b1.y, b1.z))
+  );
+  
+  // Draw each bush with camera-facing rotation
+  for (PVector bush : berryBushes) {
+    pushMatrix();
+    translate(bush.x, bush.y, bush.z);
+    rotateY(atan2(eyeX - bush.x, eyeZ - bush.z));
+    texturedCross(0, 0, 0, Berry, gridSize);
+    popMatrix();
+  }
+  
+  // Reset depth settings
+  hint(ENABLE_DEPTH_MASK);
 }
 
 void drawMap () {
   for (int x = 0; x < map.width; x++) {
     for (int y = 0; y < map.height; y++) {
       color c = map.get(x, y);
-      // Draw grass block for all positions
+      float wx = x * gridSize - 5000;
+      float wz = y * gridSize - 5000;
+      // Draw base block for all positions
+      if (c != ho && c != ho2) {
       texturedCube(x*gridSize-5000, height, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
+      }
+      if (c != ho2) {
+      texturedCube(x*gridSize-5000, height+gridSize, y*gridSize-5000, grassbb, gridSize);
+      }
+      
+      texturedCube(x*gridSize-5000, height+gridSize*2, y*gridSize-5000, Stones, gridSize);
+      texturedCube(x*gridSize-5000, height+gridSize*3, y*gridSize-5000, Stones, gridSize);
+      texturedCube(x*gridSize-5000, height+gridSize*4, y*gridSize-5000, Stones, gridSize);
+       texturedCube(x*gridSize-5000, height+gridSize*5, y*gridSize-5000, bedrock, gridSize);
       
       if (c == tb) {
-        // Get precomputed tree height
+        // Get tree height
         int trunkHeight = treeHeights[x][y];
         float topY = height - (trunkHeight - 1) * gridSize;
         
@@ -193,8 +250,14 @@ void drawMap () {
         texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
       }
       
+      if (c == st2) {
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,Stones, gridSize);
+      }
+      
       if (c == br) {
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Berry, gridSize);
+     
+        berryBushes.add(new PVector(wx, height - gridSize, wz));
       }
     }
   }
@@ -237,13 +300,13 @@ void drawFocalPoint() {
   popMatrix();
 }
 
-void drawFloor () {
-  stroke(255);
-  for (int x = -5000; x <= 5000; x = x + 100) {
-    line(x, height, -5000, x, height, 5000);
-    line(-5000, height, x, 5000, height, x);
-  }
-}
+//void drawFloor () {
+//  stroke(255);
+//  for (int x = -5000; x <= 5000; x = x + 100) {
+//    line(x, height, -5000, x, height, 5000);
+//    line(-5000, height, x, 5000, height, x);
+//  }
+//}
 
 void controlCamera() {
   if (!sprintkey) {
