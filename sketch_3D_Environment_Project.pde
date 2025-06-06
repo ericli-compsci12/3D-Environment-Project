@@ -9,7 +9,7 @@ Robot rbt;
 boolean skipFrame;
 
 //game variables
-boolean wkey, akey, skey, dkey, spacekey, shiftkey, sprintkey = false;
+boolean wkey, akey, skey, dkey,okey,zkey, spacekey, shiftkey, sprintkey = false;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
@@ -62,6 +62,12 @@ color br = #ED1C24;
 color ho = #000003;
 //color hole2
 color ho2 = #000002;
+//color diamond
+color dia = #99D9EA;
+//coal
+color coalc = #7F7F7F;
+//cobblestone
+color cbs = #969696;
 
 //Map variables
 int gridSize;
@@ -77,6 +83,9 @@ PImage spleaves;
 PImage Stones;
 PImage Berry;
 PImage bedrock;
+PImage diamond;
+PImage coal;
+PImage cobblestone;
 
 // Tree height 
 int[][] treeHeights;
@@ -122,6 +131,9 @@ void setup () {
   Stones =  loadImage("stone.png");
   Berry =  loadImage("berry bush.png");
   bedrock =  loadImage("Bedrock.png");
+  diamond = loadImage("diamond_ore.png");
+  coal = loadImage("coal_ore.png");
+  cobblestone = loadImage("cobblestone.png");
   
   
   treeHeights = new int[map.width][map.height];
@@ -139,47 +151,43 @@ void setup () {
 
 void draw() {
   background(calculateBackgroundColor());
+  if (calculateBackgroundColor() == nighttime) {
+    pointLight(0,0,130,eyeX,eyeY,eyeZ);
+  }
+  
   camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
   
   // Clear previous frame's bushes
   berryBushes.clear();
   
-  // Draw opaque elements first
-  //drawFloor();
+  // Draw opaque elements with depth testing
+  hint(ENABLE_DEPTH_TEST);
   drawMap();
   
   // Draw transparent elements last
   drawBerryBushes();
   
-  // Draw focal point (optional)
+  // Draw focal point
   drawFocalPoint();
   controlCamera();
-  
-  lights();
+ 
 }
 
 void drawBerryBushes() {
+  // Enable depth testing and blending
+  hint(ENABLE_DEPTH_TEST);
   blendMode(BLEND);
   hint(DISABLE_DEPTH_MASK);
   
-  // Sort bushes back-to-front relative to camera
-  berryBushes.sort((b1, b2) -> 
-    Float.compare(dist(eyeX, eyeY, eyeZ, b2.x, b2.y, b2.z),
-                  dist(eyeX, eyeY, eyeZ, b1.x, b1.y, b1.z))
-  );
-  
-  // Draw each bush with camera-facing rotation
+  // Draw each bush 
   for (PVector bush : berryBushes) {
-    pushMatrix();
-    translate(bush.x, bush.y, bush.z);
-    rotateY(atan2(eyeX - bush.x, eyeZ - bush.z));
-    texturedCross(0, 0, 0, Berry, gridSize);
-    popMatrix();
+    texturedCross(bush.x, bush.y, bush.z, Berry, gridSize);
   }
   
   // Reset depth settings
   hint(ENABLE_DEPTH_MASK);
 }
+
 
 void drawMap () {
   for (int x = 0; x < map.width; x++) {
@@ -259,6 +267,21 @@ void drawMap () {
      
         berryBushes.add(new PVector(wx, height - gridSize, wz));
       }
+      
+       if (c == dia) {
+     
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,diamond, gridSize);
+      }
+      
+       if (c == coalc) {
+        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,Stones, gridSize);
+        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,coal, gridSize);
+      }
+      
+       if (c == cbs) {
+        texturedCube(x*gridSize-5000, height, y*gridSize-5000,cobblestone, gridSize);
+      }
+      
     }
   }
 }
@@ -275,19 +298,28 @@ void drawLeavesLayer(int x, int y, float layerY, float size) {
 }
 
 color calculateBackgroundColor() {
-  int totalCycle = 72000;
+  int totalCycle = 7200;
   int currentFrame = frameCount % totalCycle;
-
-  if (currentFrame < 360000) {
+  println(frameCount);
+  
+   if (okey) {
+     return nighttime;
+  }
+  
+  if (zkey) {
+     return daylight;
+  }
+  
+  if (currentFrame < 3600) {
     return daylight;
-  } else if (currentFrame < 39000) {
-    float progress = (currentFrame - 36000) / 3000.0;
+  } else if (currentFrame < 3900) {
+    float progress = (currentFrame - 3600) / 300.0;
     float t = (1 - cos(progress * PI)) / 2;
     return lerpColor(daylight, nighttime, t);
-  } else if (currentFrame < 69000) {
+  } else if (currentFrame < 6900) {
     return nighttime;
   } else {
-    float progress = (currentFrame - 69000) / 3000.0;
+    float progress = (currentFrame - 6900) / 300.0;
     float t = (1 - cos(progress * PI)) / 2;
     return lerpColor(nighttime, daylight, t);
   }
@@ -310,7 +342,7 @@ void drawFocalPoint() {
 
 void controlCamera() {
   if (!sprintkey) {
-  if (wkey) {
+  if (wkey && canMoveForward()) {
     eyeX = eyeX + cos(leftRightHeadAngle)*10;
     eyeZ = eyeZ + sin(leftRightHeadAngle)*10;
   }
@@ -335,7 +367,7 @@ void controlCamera() {
   }
   }
   else if (sprintkey) {
-    if (wkey) {
+    if (wkey && canMoveForward()) {
     eyeX = eyeX + cos(leftRightHeadAngle)*40;
     eyeZ = eyeZ + sin(leftRightHeadAngle)*40;
   }
@@ -382,7 +414,6 @@ void controlCamera() {
   } else {
     skipFrame = false;
   }
-  println(eyeX, eyeY, eyeZ);
 }
 
 void keyPressed () {
@@ -390,6 +421,13 @@ void keyPressed () {
   if (key == 'A' || key == 'a' ) akey = true;
   if (key == 'S' || key == 's' ) skey = true;
   if (key == 'D' || key == 'd' ) dkey = true;
+  if (key == '1') {
+    okey = true;
+    zkey = false;
+  }
+  if (key == '0') {
+    zkey = true;
+    okey = false;}
   if (key == ' ')  spacekey = true;
   if (keyCode == SHIFT) shiftkey = true;
   if (keyCode == CONTROL) sprintkey = true;

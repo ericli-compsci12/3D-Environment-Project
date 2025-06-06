@@ -238,14 +238,16 @@ void texturedCube (float x, float y,float z,PImage Texturetb,PImage Textures,flo
   popMatrix();
 }
 
-//all faces of the block are the same
 void texturedCross(float x, float y, float z, PImage texture, float size) {
   pushMatrix();
   translate(x, y, z);
   scale(size);
   noStroke();
   
-  // First quad 
+  // Enable alpha blending
+  blendMode(BLEND);
+  
+  // First quad
   beginShape(QUADS);
   texture(texture);
   vertex(0, 0, 0, 0, 0);
@@ -254,7 +256,7 @@ void texturedCross(float x, float y, float z, PImage texture, float size) {
   vertex(0, -1, 0, 0, 1);
   endShape();
   
-  // Second quad 
+  // Second quad
   beginShape(QUADS);
   texture(texture);
   vertex(1, 0, 0, 0, 0);
