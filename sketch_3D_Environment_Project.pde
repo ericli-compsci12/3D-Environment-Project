@@ -68,6 +68,10 @@ color dia = #99D9EA;
 color coalc = #7F7F7F;
 //cobblestone
 color cbs = #969696;
+//wall
+color wl = #450E0F;
+//glass
+color gls = #FFFFFE;
 
 //Map variables
 int gridSize;
@@ -86,16 +90,25 @@ PImage bedrock;
 PImage diamond;
 PImage coal;
 PImage cobblestone;
+PImage glass;
 
 // Tree height 
 int[][] treeHeights;
 
 //berry position
 ArrayList<PVector> berryBushes = new ArrayList<>();
+ArrayList<PVector> glassBlocks = new ArrayList<>();
+
+//canvases
+PGraphics world;
+PGraphics HUD;
 
 void setup () {
-  fullScreen(P3D);
-  textureMode(NORMAL);
+  fullScreen(P2D);
+  //create canvases
+  println(width,height);
+  world = createGraphics(1920,1080,P3D);
+  HUD = createGraphics(width,height,P2D);
   wkey = akey =skey = dkey = false;
   eyeX = width/2;
   eyeY = height/2;
@@ -134,6 +147,7 @@ void setup () {
   diamond = loadImage("diamond_ore.png");
   coal = loadImage("coal_ore.png");
   cobblestone = loadImage("cobblestone.png");
+  glass = loadImage("glass.png");
   
   
   treeHeights = new int[map.width][map.height];
@@ -150,12 +164,16 @@ void setup () {
 }
 
 void draw() {
-  background(calculateBackgroundColor());
+  world.beginDraw();
+  world.textureMode(NORMAL);
+  
+  world.background(calculateBackgroundColor());
+  
   if (calculateBackgroundColor() == nighttime) {
-    pointLight(0,0,130,eyeX,eyeY,eyeZ);
+    world.pointLight(0,0,130,eyeX,eyeY,eyeZ);
   }
   
-  camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
+  world.camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
   
   // Clear previous frame's bushes
   berryBushes.clear();
@@ -164,281 +182,16 @@ void draw() {
   hint(ENABLE_DEPTH_TEST);
   drawMap();
   
-  // Draw transparent elements last
   drawBerryBushes();
-  
-  // Draw focal point
-  drawFocalPoint();
+  drawGlassBlocks();
   controlCamera();
- 
-}
-
-void drawBerryBushes() {
-  // Enable depth testing and blending
-  hint(ENABLE_DEPTH_TEST);
-  blendMode(BLEND);
-  hint(DISABLE_DEPTH_MASK);
   
-  // Draw each bush 
-  for (PVector bush : berryBushes) {
-    texturedCross(bush.x, bush.y, bush.z, Berry, gridSize);
-  }
-  
-  // Reset depth settings
-  hint(ENABLE_DEPTH_MASK);
-}
-
-
-void drawMap () {
-  for (int x = 0; x < map.width; x++) {
-    for (int y = 0; y < map.height; y++) {
-      color c = map.get(x, y);
-      float wx = x * gridSize - 5000;
-      float wz = y * gridSize - 5000;
-      // Draw base block for all positions
-      if (c != ho && c != ho2) {
-      texturedCube(x*gridSize-5000, height, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
-      }
-      if (c != ho2) {
-      texturedCube(x*gridSize-5000, height+gridSize, y*gridSize-5000, grassbb, gridSize);
-      }
-      
-      texturedCube(x*gridSize-5000, height+gridSize*2, y*gridSize-5000, Stones, gridSize);
-      texturedCube(x*gridSize-5000, height+gridSize*3, y*gridSize-5000, Stones, gridSize);
-      texturedCube(x*gridSize-5000, height+gridSize*4, y*gridSize-5000, Stones, gridSize);
-       texturedCube(x*gridSize-5000, height+gridSize*5, y*gridSize-5000, bedrock, gridSize);
-      
-      if (c == tb) {
-        // Get tree height
-        int trunkHeight = treeHeights[x][y];
-        float topY = height - (trunkHeight - 1) * gridSize;
-        
-        // Draw trunk
-        for (int i = 0; i < trunkHeight; i++) {
-          float yPos = height - i * gridSize;
-          texturedCube(x*gridSize-5000, yPos, y*gridSize-5000, spwoodbt, spwoodbs, gridSize);
-        }
-        
-        // Draw leaves layers relative to top of trunk
-        // First layer 
-        drawLeavesLayer(x, y, topY, gridSize);
-        // Second layer
-        drawLeavesLayer(x, y, topY - gridSize, gridSize);
-        // Third layer 
-        drawLeavesLayer(x, y, topY - 2 * gridSize, gridSize);
-        // Fourth layer
-        texturedCube(x*gridSize-5000, topY - 3 * gridSize, y*gridSize-5000, spleaves, gridSize);
-      }
-      
-      if (c == dt) {        
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
-      }
-      
-      if (c == dt2) {        
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,grassbb, gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
-      }
-      
-      if (c == dt3) {        
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,grassbb, gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,grassbb, gridSize);
-         texturedCube(x*gridSize-5000, height - gridSize*3, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
-      }
-      
-      if (c == dt4) {        
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,grassbb, gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*3, y*gridSize-5000, grassbb,gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*4, y*gridSize-5000, grassbb,gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*5, y*gridSize-5000, grassbt, grassbb, grassbs, gridSize);
-        
-      }
-      
-      if (c == st) {
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
-      }
-      
-      if (c == st2) {
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,Stones, gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,Stones, gridSize);
-      }
-      
-      if (c == br) {
-     
-        berryBushes.add(new PVector(wx, height - gridSize, wz));
-      }
-      
-       if (c == dia) {
-     
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,diamond, gridSize);
-      }
-      
-       if (c == coalc) {
-        texturedCube(x*gridSize-5000, height - gridSize*2, y*gridSize-5000,Stones, gridSize);
-        texturedCube(x*gridSize-5000, height - gridSize, y*gridSize-5000,coal, gridSize);
-      }
-      
-       if (c == cbs) {
-        texturedCube(x*gridSize-5000, height, y*gridSize-5000,cobblestone, gridSize);
-      }
-      
-    }
-  }
-}
-
-void drawLeavesLayer(int x, int y, float layerY, float size) {
- 
-  for (int dx = -1; dx <= 1; dx++) {
-    for (int dz = -1; dz <= 1; dz++) {
-     
-      if (abs(dx) == 1 && abs(dz) == 1) continue;
-      texturedCube((x+dx)*gridSize-5000, layerY, (y+dz)*gridSize-5000, spleaves, size);
-    }
-  }
-}
-
-color calculateBackgroundColor() {
-  int totalCycle = 7200;
-  int currentFrame = frameCount % totalCycle;
-  println(frameCount);
-  
-   if (okey) {
-     return nighttime;
-  }
-  
-  if (zkey) {
-     return daylight;
-  }
-  
-  if (currentFrame < 3600) {
-    return daylight;
-  } else if (currentFrame < 3900) {
-    float progress = (currentFrame - 3600) / 300.0;
-    float t = (1 - cos(progress * PI)) / 2;
-    return lerpColor(daylight, nighttime, t);
-  } else if (currentFrame < 6900) {
-    return nighttime;
-  } else {
-    float progress = (currentFrame - 6900) / 300.0;
-    float t = (1 - cos(progress * PI)) / 2;
-    return lerpColor(nighttime, daylight, t);
-  }
-}
-
-void drawFocalPoint() {
-  pushMatrix();
-  translate(focusX, focusY, focusZ);
-  sphere(5);
-  popMatrix();
-}
-
-//void drawFloor () {
-//  stroke(255);
-//  for (int x = -5000; x <= 5000; x = x + 100) {
-//    line(x, height, -5000, x, height, 5000);
-//    line(-5000, height, x, 5000, height, x);
-//  }
-//}
-
-void controlCamera() {
-  if (!sprintkey) {
-  if (wkey && canMoveForward()) {
-    eyeX = eyeX + cos(leftRightHeadAngle)*10;
-    eyeZ = eyeZ + sin(leftRightHeadAngle)*10;
-  }
-  if (skey) {
-    eyeX = eyeX - cos(leftRightHeadAngle)*10;
-    eyeZ = eyeZ - sin(leftRightHeadAngle)*10;
-  }
-  if (akey) {
-    eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*10;
-    eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*10;
-  }
-  if (dkey) {
-    eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*10;
-    eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*10;
-  }
-  if (spacekey) {
-    eyeY = eyeY - 5;
-  }
-  
-  if (shiftkey) {
-    eyeY = eyeY + 5;
-  }
-  }
-  else if (sprintkey) {
-    if (wkey && canMoveForward()) {
-    eyeX = eyeX + cos(leftRightHeadAngle)*40;
-    eyeZ = eyeZ + sin(leftRightHeadAngle)*40;
-  }
-  if (skey) {
-    eyeX = eyeX - cos(leftRightHeadAngle)*40;
-    eyeZ = eyeZ - sin(leftRightHeadAngle)*40;
-  }
-  if (akey) {
-    eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*40;
-    eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*40;
-  }
-  if (dkey) {
-    eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*40;
-    eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*40;
-  }
-  if (spacekey) {
-    eyeY = eyeY - 20;
-  }
-  
-  if (shiftkey) {
-    eyeY = eyeY + 20;
-  }
-  }
-
-  if (skipFrame == false) {
-    leftRightHeadAngle = leftRightHeadAngle + (mouseX - pmouseX) * 0.005;
-    upDownHeadAngle = upDownHeadAngle + (mouseY - pmouseY) * 0.005;
-  }
-
-  if (upDownHeadAngle > PI/2.5) upDownHeadAngle = PI/2.5;
-  if (upDownHeadAngle < -PI/2.5) upDownHeadAngle = -PI/2.5;
-
-
-  focusX = eyeX + cos(leftRightHeadAngle)*300;
-  focusZ = eyeZ + sin(leftRightHeadAngle)*300;
-  focusY = eyeY + tan(upDownHeadAngle)*300;
-
-  if (mouseX < 2) {
-    rbt.mouseMove(width-3, mouseY);
-    skipFrame = true;
-  } else if (mouseX > width -2) {
-    rbt.mouseMove(3, mouseY);
-    skipFrame = true;
-  } else {
-    skipFrame = false;
-  }
-}
-
-void keyPressed () {
-  if (key == 'W' || key == 'w' ) wkey = true;
-  if (key == 'A' || key == 'a' ) akey = true;
-  if (key == 'S' || key == 's' ) skey = true;
-  if (key == 'D' || key == 'd' ) dkey = true;
-  if (key == '1') {
-    okey = true;
-    zkey = false;
-  }
-  if (key == '0') {
-    zkey = true;
-    okey = false;}
-  if (key == ' ')  spacekey = true;
-  if (keyCode == SHIFT) shiftkey = true;
-  if (keyCode == CONTROL) sprintkey = true;
-}
-
-void keyReleased () {
-  if (key == 'W' || key == 'w' ) wkey = false;
-  if (key == 'A' || key == 'a' ) akey = false;
-  if (key == 'S' || key == 's' ) skey = false;
-  if (key == 'D' || key == 'd' ) dkey = false;
-  if (key == ' ')  spacekey = false;
-  if (keyCode == SHIFT) shiftkey = false;
-  if (keyCode == CONTROL) sprintkey = false;
+   world.endDraw();
+   image(world,0,0);
+   
+   pushMatrix();
+   scale(0.5);
+   translate(width/2,height/2);
+   cross();
+   popMatrix();
 }
