@@ -72,6 +72,12 @@ color cbs = #969696;
 color wl = #450E0F;
 //glass
 color gls = #FFFFFE;
+//leaf column
+color lc = #B5E61D;
+//leaf column 2
+color lc2 = #C9FF20;
+//spruce plank
+color spp = #FFF200;
 
 //Map variables
 int gridSize;
@@ -91,6 +97,7 @@ PImage diamond;
 PImage coal;
 PImage cobblestone;
 PImage glass;
+PImage spplanks;
 
 // Tree height 
 int[][] treeHeights;
@@ -108,7 +115,7 @@ void setup () {
   //create canvases
   println(width,height);
   world = createGraphics(1920,1080,P3D);
-  HUD = createGraphics(width,height,P2D);
+  HUD = createGraphics(1920,1080,P2D);
   wkey = akey =skey = dkey = false;
   eyeX = width/2;
   eyeY = height/2;
@@ -148,6 +155,7 @@ void setup () {
   coal = loadImage("coal_ore.png");
   cobblestone = loadImage("cobblestone.png");
   glass = loadImage("glass.png");
+  spplanks = loadImage("spruce_planks.png");
   
   
   treeHeights = new int[map.width][map.height];
@@ -179,7 +187,7 @@ void draw() {
   berryBushes.clear();
   
   // Draw opaque elements with depth testing
-  hint(ENABLE_DEPTH_TEST);
+  world.hint(ENABLE_DEPTH_TEST);
   drawMap();
   
   drawBerryBushes();
@@ -189,9 +197,15 @@ void draw() {
    world.endDraw();
    image(world,0,0);
    
+   HUD.beginDraw();
+   HUD.clear();
    pushMatrix();
    scale(0.5);
    translate(width/2,height/2);
    cross();
    popMatrix();
+   
+   drawMinimap();
+   HUD.endDraw();
+   image(HUD,0,0);
 }

@@ -104,6 +104,22 @@ void drawMap () {
         glassBlocks.add(new PVector(wx, height - gridSize*3, wz));
       }
       
+      if (c == lc) {
+        texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,spleaves, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*2, y*gridSize-5000,spleaves, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,spleaves, gridSize);
+      }
+      
+       if (c == lc2) {
+        texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,spleaves, gridSize);
+      }
+      
+      if (c == spp) {
+        texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,spplanks, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*2, y*gridSize-5000,spplanks, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,spplanks, gridSize);
+      }
+      
     }
   }
 }

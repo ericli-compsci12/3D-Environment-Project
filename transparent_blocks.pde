@@ -1,8 +1,8 @@
 void drawBerryBushes() {
   // Enable depth testing and blending
-  hint(ENABLE_DEPTH_TEST);
+  world.hint(ENABLE_DEPTH_TEST);
   world.blendMode(BLEND);
-  hint(DISABLE_DEPTH_MASK);
+  world.hint(DISABLE_DEPTH_MASK);
   
   // Draw each bush 
   for (PVector bush : berryBushes) {
@@ -10,14 +10,14 @@ void drawBerryBushes() {
   }
   
   // Reset depth settings
-  hint(ENABLE_DEPTH_MASK);
+  world.hint(ENABLE_DEPTH_MASK);
 }
 
 void drawGlassBlocks() {
   // Enable depth testing and blending
-  hint(ENABLE_DEPTH_TEST);
+  world.hint(ENABLE_DEPTH_TEST);
   world.blendMode(BLEND);
-  hint(DISABLE_DEPTH_MASK);
+  world.hint(DISABLE_DEPTH_MASK);
   
   // Set transparency for glass 
   world.tint(255, 180); 
