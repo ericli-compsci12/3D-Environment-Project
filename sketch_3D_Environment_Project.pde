@@ -110,12 +110,19 @@ ArrayList<PVector> glassBlocks = new ArrayList<>();
 PGraphics world;
 PGraphics HUD;
 
+//Game Objects
+//ArrayList<GameObject> objects;
+
 void setup () {
   fullScreen(P2D);
   //create canvases
   println(width,height);
   world = createGraphics(1920,1080,P3D);
   HUD = createGraphics(1920,1080,P2D);
+  
+  //create game object list
+  //objects = new ArrayList<GameObject>();
+  
   wkey = akey =skey = dkey = false;
   eyeX = width/2;
   eyeY = height/2;

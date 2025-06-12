@@ -1,65 +1,40 @@
 
 
 void controlCamera() {
-  if (!sprintkey) {
-  if (wkey && canMoveForward()) {
-    eyeX = eyeX + cos(leftRightHeadAngle)*10;
-    eyeZ = eyeZ + sin(leftRightHeadAngle)*10;
+  float speed = sprintkey ? 40 : 10;
+  float vertSpeed = sprintkey ? 20 : 5;
+
+  if (wkey) {
+    eyeX += cos(leftRightHeadAngle) * speed;
+    eyeZ += sin(leftRightHeadAngle) * speed;
   }
   if (skey) {
-    eyeX = eyeX - cos(leftRightHeadAngle)*10;
-    eyeZ = eyeZ - sin(leftRightHeadAngle)*10;
+    eyeX -= cos(leftRightHeadAngle) * speed;
+    eyeZ -= sin(leftRightHeadAngle) * speed;
   }
   if (akey) { 
-    eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*10;
-    eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*10;
+    eyeX -= cos(leftRightHeadAngle + radians(90)) * speed;
+    eyeZ -= sin(leftRightHeadAngle + radians(90)) * speed;
   }
   if (dkey) {
-    eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*10;
-    eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*10;
+    eyeX += cos(leftRightHeadAngle + radians(90)) * speed;
+    eyeZ += sin(leftRightHeadAngle + radians(90)) * speed;
   }
   if (spacekey) {
-    eyeY = eyeY - 5;
+    eyeY -= vertSpeed;
   }
-  
   if (shiftkey) {
-    eyeY = eyeY + 5;
-  }
-  }
-  else if (sprintkey) {
-    if (wkey && canMoveForward()) {
-    eyeX = eyeX + cos(leftRightHeadAngle)*40;
-    eyeZ = eyeZ + sin(leftRightHeadAngle)*40;
-  }
-  if (skey) {
-    eyeX = eyeX - cos(leftRightHeadAngle)*40;
-    eyeZ = eyeZ - sin(leftRightHeadAngle)*40;
-  }
-  if (akey) {
-    eyeX = eyeX - cos(leftRightHeadAngle + radians(90))*40;
-    eyeZ = eyeZ - sin(leftRightHeadAngle + radians(90))*40;
-  }
-  if (dkey) {
-    eyeX = eyeX + cos(leftRightHeadAngle + radians(90))*40;
-    eyeZ = eyeZ + sin(leftRightHeadAngle + radians(90))*40;
-  }
-  if (spacekey) {
-    eyeY = eyeY - 20;
-  }
-  
-  if (shiftkey) {
-    eyeY = eyeY + 20;
-  }
+    eyeY += vertSpeed;
   }
 
+ 
   if (skipFrame == false) {
-    leftRightHeadAngle = leftRightHeadAngle + (mouseX - pmouseX) * 0.005;
-    upDownHeadAngle = upDownHeadAngle + (mouseY - pmouseY) * 0.005;
+    leftRightHeadAngle += (mouseX - pmouseX) * 0.005;
+    upDownHeadAngle += (mouseY - pmouseY) * 0.005;
   }
 
   if (upDownHeadAngle > PI/2.5) upDownHeadAngle = PI/2.5;
   if (upDownHeadAngle < -PI/2.5) upDownHeadAngle = -PI/2.5;
-
 
   focusX = eyeX + cos(leftRightHeadAngle)*300;
   focusZ = eyeZ + sin(leftRightHeadAngle)*300;
