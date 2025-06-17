@@ -13,6 +13,11 @@ boolean wkey, akey, skey, dkey,okey,zkey, spacekey, shiftkey, sprintkey = false;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
+// Player collision dimensions
+float playerHeight = 180; // Player height in world units
+float playerRadius = 30;  // Player collision radius
+float playerFeetY;        // Y position of player's feet
+
 //COLOR PALLETE
 //sky blue
 color daylight = #87CEEB;
@@ -38,6 +43,8 @@ color gold = #FFD700;
 color orange = #FFA500;
 //grey color rgb(100, 100, 100)
 color grey = #646464;
+//light grey color rgb(211, 211, 211)
+color lightgrey = #D3D3D3;
 //purple color rgb(211, 3, 252)
 color purple = #d303fc;
 //purple blue color rgb(115, 3, 252)
@@ -76,12 +83,19 @@ color gls = #FFFFFE;
 color lc = #B5E61D;
 //leaf column 2
 color lc2 = #C9FF20;
+//leaf column 3
+color lc3 = #C9FF21;
 //spruce plank
 color spp = #FFF200;
+//transparent
+color transparent = color(0, 1, 0, 0);
+//pumpkin
+color pumpk = #FFF201;
 
 //Map variables
 int gridSize;
 PImage map;
+boolean[][][] solidBlocks; // 3D array for solid blocks
 
 //texture variables
 PImage grassbs;
@@ -98,6 +112,14 @@ PImage coal;
 PImage cobblestone;
 PImage glass;
 PImage spplanks;
+PImage background;
+PImage trapdoor;
+PImage sprucedoor;
+PImage pumpkint;
+PImage pumpkinb;
+PImage pumpkins;
+PImage pumpkinf;
+
 
 // Tree height 
 int[][] treeHeights;
@@ -111,8 +133,25 @@ PGraphics world;
 PGraphics HUD;
 
 //Game Objects
-//ArrayList<GameObject> objects;
+ArrayList<GameObject> objects;
 
+ //mode frame work
+  int mode = 0;
+  final int loading = 0;
+  final int game = 1;
+  
+  //Button class
+ Button myButton;
+ boolean mouseReleased;
+ boolean wasPressed;
+ 
+ //Font for all text
+  PFont all;
+  
+  // Door state management
+  HashMap<String, Boolean> doorStates = new HashMap<>();
+  boolean doorClicked = false;
+  
 void setup () {
   fullScreen(P2D);
   //create canvases
@@ -121,7 +160,7 @@ void setup () {
   HUD = createGraphics(1920,1080,P2D);
   
   //create game object list
-  //objects = new ArrayList<GameObject>();
+  objects = new ArrayList<GameObject>();
   
   wkey = akey =skey = dkey = false;
   eyeX = width/2;
@@ -134,7 +173,6 @@ void setup () {
   tiltY = 1;
   tiltZ = 0;
   leftRightHeadAngle = radians(270);
-  noCursor();
   try {
     rbt = new Robot();
   }
@@ -147,6 +185,9 @@ void setup () {
   map = loadImage("map.png");
   gridSize = 10000 / map.width; // Adjust gridSize based on map width
   map = loadImage("map.png");
+  
+  // Initialize solid blocks array
+  buildSolidBlocks();
   
   //load textures
   grassbs = loadImage("grass_block_side.png");
@@ -163,7 +204,14 @@ void setup () {
   cobblestone = loadImage("cobblestone.png");
   glass = loadImage("glass.png");
   spplanks = loadImage("spruce_planks.png");
-  
+  background = loadImage("starting image.png");
+  trapdoor = loadImage("Spruce_Trapdoor.png");
+  sprucedoor = loadImage("sprucedoor.jpg");
+  pumpkint = loadImage("pumpkin_top.png");
+  pumpkins = loadImage("pumpkin_side.png");
+  pumpkinb = loadImage("pumpkin_bottom.png");
+  pumpkinb = loadImage("pumpkin_bottom.png");
+  pumpkinf = loadImage("jack_o_lantern.png");
   
   treeHeights = new int[map.width][map.height];
   for (int x = 0; x < map.width; x++) {
@@ -176,43 +224,172 @@ void setup () {
       }
     }
   }
+  
+  // Initialize button (text, x, y, w, h, normalColor, highlightColor)
+  myButton = new Button("START", 1920/2, 1080/2 + 400, 300, 100, transparent, white);
+  
+  //load font
+  all = createFont("MinecraftTen-VGORe.ttf", 200); 
+  
+  if (map == null) {
+    println("ERROR: Map not found!");
+    exit();
+} else {
+    map.loadPixels(); // Ensure pixels are available
+}
+
+}
+
+void buildSolidBlocks() {
+  if (map == null) {
+        println("Error: Map not loaded!");
+        return;
+    }
+    solidBlocks = new boolean[map.width][50][map.height]; // 50 layers of height
+
+    for (int x = 0; x < map.width; x++) {
+      
+        for (int z = 0; z < map.height; z++) {
+           if (map.pixels == null) {
+                println("Map pixels not available at: " + x + "," + z);
+                continue;
+            }
+            
+            color c = map.get(x, z);
+            
+            // Base layers
+            solidBlocks[x][0][z] = true; // Bedrock bottom
+            solidBlocks[x][1][z] = (c != ho && c != ho2); // Dirt/grass unless hole
+            solidBlocks[x][2][z] = true; // Stone
+            solidBlocks[x][3][z] = true; // Stone
+            solidBlocks[x][4][z] = true; // Stone
+            solidBlocks[x][5][z] = true; // Bedrock top
+
+            // Tree trunk
+            if (c == tb) {
+                int trunkHeight = treeHeights[x][z];
+                for (int y = 6; y < 6 + trunkHeight; y++) {
+                    if (y < 50) solidBlocks[x][y][z] = true;
+                }
+            }
+            
+            // Dirt variations
+            if (c == dt) {
+                solidBlocks[x][1][z] = true; // Surface dirt
+            }
+            if (c == dt2) {
+                solidBlocks[x][1][z] = true; // Surface dirt
+                solidBlocks[x][2][z] = true; // Subsurface dirt
+            }
+            if (c == dt3) {
+                solidBlocks[x][1][z] = true; // Surface dirt
+                solidBlocks[x][2][z] = true; // Subsurface dirt
+                solidBlocks[x][3][z] = true; // Subsurface dirt
+            }
+            if (c == dt4) {
+                solidBlocks[x][1][z] = true; // Surface stone
+                solidBlocks[x][2][z] = true; // Dirt
+                solidBlocks[x][3][z] = true; // Dirt
+                solidBlocks[x][4][z] = true; // Dirt
+            }
+            
+            // Stone variations
+            if (c == st) {
+                solidBlocks[x][1][z] = true; // Surface stone
+            }
+            if (c == st2) {
+                solidBlocks[x][1][z] = true; // Surface stone
+                solidBlocks[x][2][z] = true; // Subsurface stone
+            }
+            
+            // Ores
+            if (c == dia) {
+                solidBlocks[x][1][z] = true; // Diamond ore
+            }
+            if (c == coalc) {
+                solidBlocks[x][1][z] = true; // Coal ore
+                solidBlocks[x][2][z] = true; // Stone underneath
+            }
+            
+            // Cobblestone
+            if (c == cbs) {
+                solidBlocks[x][0][z] = true; // Surface cobblestone
+                solidBlocks[x][5][z] = true; // Planks above
+            }
+            
+            // Walls
+            if (c == wl) {
+                solidBlocks[x][6][z] = true; // Wall block 1
+                solidBlocks[x][7][z] = true; // Wall block 2
+                solidBlocks[x][8][z] = true; // Wall block 3
+            }
+            
+            // Leaves columns
+            if (c == lc) {
+                solidBlocks[x][6][z] = true; // Leaves 1
+                solidBlocks[x][7][z] = true; // Leaves 2
+                solidBlocks[x][8][z] = true; // Leaves 3
+                solidBlocks[x][9][z] = true; // Leaves 4
+            }
+            if (c == lc2) {
+                solidBlocks[x][6][z] = true; // Trapdoor 1
+                solidBlocks[x][7][z] = true; // Trapdoor 2
+                solidBlocks[x][8][z] = true; // Trapdoor 3
+                solidBlocks[x][9][z] = true; // Leaves
+            }
+            if (c == lc3) {
+                solidBlocks[x][6][z] = true; // Leaves
+                solidBlocks[x][9][z] = true; // Leaves
+                // Doors handled dynamically in collision detection
+            }
+            
+            // Spruce planks
+            if (c == spp) {
+                solidBlocks[x][6][z] = true; // Plank 1
+                solidBlocks[x][7][z] = true; // Plank 2
+                solidBlocks[x][8][z] = true; // Plank 3
+                solidBlocks[x][9][z] = true; // Plank 4
+            }
+            
+            // Pumpkin
+            if (c == pumpk) {
+                solidBlocks[x][6][z] = true; // Pumpkin block
+            }
+            
+            // Glass - solid (player cannot pass through)
+            if (c == gls) {
+                solidBlocks[x][6][z] = true; // Glass block 1
+                solidBlocks[x][7][z] = true; // Glass block 2
+                solidBlocks[x][8][z] = true; // Glass block 3
+            }
+            
+            // Berry bushes - not solid (player can pass through)
+            if (c == br) {
+                solidBlocks[x][6][z] = false;
+            }
+        }
+    }
 }
 
 void draw() {
-  world.beginDraw();
-  world.textureMode(NORMAL);
-  
-  world.background(calculateBackgroundColor());
-  
-  if (calculateBackgroundColor() == nighttime) {
-    world.pointLight(0,0,130,eyeX,eyeY,eyeZ);
+  if (mode == game) {
+    game();
   }
-  
-  world.camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
-  
-  // Clear previous frame's bushes
-  berryBushes.clear();
-  
-  // Draw opaque elements with depth testing
-  world.hint(ENABLE_DEPTH_TEST);
-  drawMap();
-  
-  drawBerryBushes();
-  drawGlassBlocks();
-  controlCamera();
-  
-   world.endDraw();
-   image(world,0,0);
-   
-   HUD.beginDraw();
-   HUD.clear();
-   pushMatrix();
-   scale(0.5);
-   translate(width/2,height/2);
-   cross();
-   popMatrix();
-   
-   drawMinimap();
-   HUD.endDraw();
-   image(HUD,0,0);
+  else if (mode == loading) {
+    loadingPage();
+  }
+}
+
+void click() {
+  doorClicked = false;
+  if (mousePressed) {
+    wasPressed = true;
+  } else {
+    if (wasPressed) {
+      mouseReleased = true;
+      wasPressed = false;
+    } else {
+      mouseReleased = false;
+    }
+  }
 }

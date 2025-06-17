@@ -2,6 +2,7 @@ void drawMinimap() {
   HUD.image(map,50,50,160,160);
   int miniX = int(eyeX+5000)/gridSize;
   int miniY = int(eyeZ+5000)/gridSize;
+  int miniy = 21-int((eyeY+5000)/gridSize);
   
   // Convert to minimap coordinates
   int mapX = miniX*4 + 50;
@@ -12,7 +13,8 @@ void drawMinimap() {
   
   HUD.textSize(20);
   HUD.text("X: " + miniX,50,230);
-  HUD.text("Y: " + miniY,50,270);
+  HUD.text("Y: " + miniy,50,270);
+  HUD.text("Z: " + miniY,50,310);
 }
 
 void icon(int size, int x, int y, float direction) {
@@ -23,4 +25,3 @@ void icon(int size, int x, int y, float direction) {
   float endAngle = direction + QUARTER_PI/2;    
   HUD.arc(x, y, size, size, startAngle, endAngle, PIE);
 }
-    

@@ -90,6 +90,7 @@ void drawMap () {
       
        if (c == cbs) {
         texturedCube(x*gridSize-5000, height, y*gridSize-5000,cobblestone, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*4, y*gridSize-5000,spplanks, gridSize,gridSize/2,gridSize);
       }
       
       if (c == wl) {
@@ -102,23 +103,57 @@ void drawMap () {
         glassBlocks.add(new PVector(wx, height - gridSize, wz));
         glassBlocks.add(new PVector(wx, height - gridSize*2, wz));
         glassBlocks.add(new PVector(wx, height - gridSize*3, wz));
+        texturedCube(x*gridSize-5000, height-gridSize*4, y*gridSize-5000,spplanks, gridSize,gridSize/2,gridSize);
       }
       
       if (c == lc) {
         texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,spleaves, gridSize);
         texturedCube(x*gridSize-5000, height-gridSize*2, y*gridSize-5000,spleaves, gridSize);
         texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,spleaves, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*4, y*gridSize-5000,spleaves, gridSize);
       }
       
        if (c == lc2) {
-        texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,spleaves, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*4, y*gridSize-5000,spleaves, gridSize);
+        texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,trapdoor, gridSize,gridSize,gridSize*(3/16));
+        texturedCube(x*gridSize-5000, height-gridSize*2, y*gridSize-5000,trapdoor, gridSize,gridSize,gridSize*(3/16));
+        texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,trapdoor, gridSize,gridSize,gridSize*(3/16));
       }
+      
+      if (c == lc3) {
+    texturedCube(x*gridSize-5000, height-gridSize*4, y*gridSize-5000,spleaves, gridSize);
+    
+    // Get door state
+    String doorKey = x + "," + y;
+    boolean isOpen = doorStates.getOrDefault(doorKey, false);
+    
+    // Draw door based on state
+    if (isOpen) {
+        texturedCube(x*gridSize-5000 + gridSize, height-gridSize*1, y*gridSize-5000,sprucedoor, gridSize/10,gridSize*2);
+    } else {
+        texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,sprucedoor, gridSize,gridSize*2,gridSize*(3/16));
+    }
+    
+    texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,trapdoor, gridSize,gridSize,gridSize*(3/16));
+    texturedCube(x*gridSize-5000+gridSize*2, height-gridSize*4, y*gridSize-5000,spleaves, gridSize);
+}
+
       
       if (c == spp) {
         texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,spplanks, gridSize);
         texturedCube(x*gridSize-5000, height-gridSize*2, y*gridSize-5000,spplanks, gridSize);
         texturedCube(x*gridSize-5000, height-gridSize*3, y*gridSize-5000,spplanks, gridSize);
-      }
+        texturedCube(x*gridSize-5000, height-gridSize*4, y*gridSize-5000,spplanks, gridSize,gridSize/2,gridSize);
+        texturedCube(x*gridSize-5000-gridSize, height-gridSize*4, y*gridSize-5000,spplanks, gridSize,gridSize/2,gridSize);
+        texturedCube(x*gridSize-5000+gridSize, height-gridSize*4, y*gridSize-5000,spplanks, gridSize,gridSize/2,gridSize);
+      }  
+      
+      if (c == pumpk) {
+        texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,pumpkint,pumpkinb,pumpkinf,pumpkins,pumpkins,pumpkins, gridSize);
+        if (calculateBackgroundColor() == nighttime) {
+              world.spotLight(255, 255, 255, x*gridSize-5000, height-gridSize*1, y*gridSize-5000, gridSize*2, gridSize*2, gridSize*2, PI/2, 1000);
+  }      
+      }  
       
     }
   }
