@@ -4,36 +4,53 @@ void controlCamera() {
     
     playerFeetY = eyeY - playerHeight;
     
-    float newEyeX = eyeX;
-    float newEyeZ = eyeZ;
+    // Calculate horizontal movement
+    float moveX = 0;
+    float moveZ = 0;
     
-    // Horizontal movement
-    if (wkey) newEyeX += cos(leftRightHeadAngle) * speed;
-    if (skey) newEyeX -= cos(leftRightHeadAngle) * speed;
-    if (akey) newEyeX -= cos(leftRightHeadAngle + radians(90)) * speed;
-    if (dkey) newEyeX += cos(leftRightHeadAngle + radians(90)) * speed;
-    if (skey) newEyeZ -= sin(leftRightHeadAngle) * speed;
-    if (wkey) newEyeZ += sin(leftRightHeadAngle) * speed;
-    if (akey) newEyeZ -= sin(leftRightHeadAngle + radians(90)) * speed;
-    if (dkey) newEyeZ += sin(leftRightHeadAngle + radians(90)) * speed;
-
-    //// Horizontal collision check
-    //if (!isColliding(newEyeX, playerFeetY, eyeZ, playerRadius, playerHeight)) {
-    //    eyeX = newEyeX;
-    //    eyeZ = newEyeZ;
-    //}
+    if (wkey) {
+        moveX += cos(leftRightHeadAngle) * speed;
+        moveZ += sin(leftRightHeadAngle) * speed;
+    }
+    if (skey) {
+        moveX -= cos(leftRightHeadAngle) * speed;
+        moveZ -= sin(leftRightHeadAngle) * speed;
+    }
+    if (akey) {
+        moveX += cos(leftRightHeadAngle + HALF_PI) * speed;
+        moveZ += sin(leftRightHeadAngle + HALF_PI) * speed;
+    }
+    if (dkey) {
+        moveX += cos(leftRightHeadAngle - HALF_PI) * speed;
+        moveZ += sin(leftRightHeadAngle - HALF_PI) * speed;
+    }
     
-    //// Vertical movement
-    //float newEyeY = eyeY;
-    //if (spacekey) newEyeY -= vertSpeed;
-    //if (shiftkey) newEyeY += vertSpeed;
+    // Normalize diagonal movement
+    if (moveX != 0 && moveZ != 0) {
+        moveX *= 0.7071; // 1/sqrt(2)
+        moveZ *= 0.7071;
+    }
     
-    //// Vertical collision check
-    //if (!isColliding(eyeX, newEyeY - playerHeight, eyeZ, playerRadius, playerHeight)) {
-    //    eyeY = newEyeY;
-    //}
+    float newEyeX = eyeX + moveX;
+    float newEyeZ = eyeZ + moveZ;
     
+    // Horizontal collision check with new position
+    if (!isColliding(newEyeX, playerFeetY, newEyeZ, playerRadius, playerHeight)) {
+        eyeX = newEyeX;
+        eyeZ = newEyeZ;
+    }
     
+    // Vertical movement
+    float newEyeY = eyeY;
+    if (spacekey) newEyeY -= vertSpeed;
+    if (shiftkey) newEyeY += vertSpeed;
+    
+    // Vertical collision check with current horizontal position
+    if (!isColliding(eyeX, newEyeY - playerHeight, eyeZ, playerRadius, playerHeight)) {
+        eyeY = newEyeY;
+    }
+    
+    // Camera rotation and mouse wrapping
     if (skipFrame == false) {
         leftRightHeadAngle += (mouseX - pmouseX) * 0.005;
         upDownHeadAngle += (mouseY - pmouseY) * 0.005;
