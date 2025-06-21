@@ -19,6 +19,6 @@ void loadingPage() {
   click();
   
   if (mouseReleased && myButton.isHovered()) {
-    mode ++;
+    mode = game;
   }
 }

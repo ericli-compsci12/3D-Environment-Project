@@ -17,9 +17,11 @@ void game () {
   world.textureMode(NORMAL);
   world.background(calculateBackgroundColor());
   
+  
+  
   if (calculateBackgroundColor() == nighttime) {
     world.pointLight(0,0,130,eyeX,eyeY,eyeZ);
-  }
+}
   
   world.camera(eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
   

@@ -11,12 +11,7 @@ boolean skipFrame;
 //game variables
 boolean wkey, akey, skey, dkey,okey,zkey, spacekey, shiftkey, sprintkey = false;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
-float leftRightHeadAngle, upDownHeadAngle;
-
-// Player collision dimensions
-float playerHeight = 200; 
-float playerRadius = 30; 
-float playerFeetY;   
+float leftRightHeadAngle, upDownHeadAngle;   
 
 //COLOR PALLETE
 //sky blue
@@ -120,6 +115,13 @@ PImage pumpkinb;
 PImage pumpkins;
 PImage pumpkinf;
 
+// Player collision dimensions (AABB)
+float playerWidth = 0.6 * gridSize;
+float playerDepth = 0.6 * gridSize;
+float playerHeightBox = 1.8 * gridSize;  // Total height of player
+float eyeToFeet = 1.62 * gridSize;  // Distance from eyes to feet
+
+
 
 // Tree height 
 int[][] treeHeights;
@@ -153,6 +155,7 @@ ArrayList<GameObject> objects;
   boolean doorClicked = false;
   
 void setup () {
+  click();
   fullScreen(P2D);
   //create canvases
   println(width,height);
@@ -162,9 +165,10 @@ void setup () {
   //create game object list
   objects = new ArrayList<GameObject>();
   
+  
   wkey = akey =skey = dkey = false;
   eyeX = 0;
-  eyeY = -80;
+  eyeY = height - eyeToFeet - 400;
   eyeZ = 0;
   focusX = width/2;
   focusY = height/2;
@@ -242,8 +246,7 @@ void setup () {
     map.loadPixels(); // Ensure pixels are available
 }
 
-playerHeight = gridSize * 2; // Player is 2 blocks tall
-playerRadius = gridSize * 0.3; // Player collision radius
+
 
 }
 
@@ -338,7 +341,9 @@ void buildSolidBlocks() {
     println("Solid blocks built successfully!");
 }
 
+
 void draw() {
+  
   if (mode == game) {
     game();
   }
