@@ -4,11 +4,11 @@ color calculateBackgroundColor() {
   int currentFrame = frameCount % totalCycle;
   //println(frameCount);
   
-   if (okey) {
+   if (ninekey) {
      return nighttime;
   }
   
-  if (zkey) {
+  if (zerokey) {
      return daylight;
   }
   

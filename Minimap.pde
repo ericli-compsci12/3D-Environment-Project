@@ -4,6 +4,8 @@ void drawMinimap() {
   int miniY = int(eyeZ+5000)/gridSize;
   int miniy = 21-int((eyeY+5000)/gridSize);
   
+   currentMiniY = miniy;
+   
   // Convert to minimap coordinates
   int mapX = miniX*4 + 50;
   int mapY = miniY*4 +50;

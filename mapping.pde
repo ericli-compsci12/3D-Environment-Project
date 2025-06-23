@@ -150,15 +150,27 @@ void drawMap () {
       
       if (c == pumpk) {
         texturedCube(x*gridSize-5000, height-gridSize*1, y*gridSize-5000,pumpkint,pumpkinb,pumpkinf,pumpkins,pumpkins,pumpkins, gridSize);
-        if (calculateBackgroundColor() == nighttime) {
+        
           pushStyle();
           world.lightFalloff(1.0, 0.0005, 0.000001);
            world.lightSpecular(200, 150, 100);
-          world.pointLight(255, 220, 180,x*gridSize-5000, height-gridSize*2 , y*gridSize-5000);  
+          world.pointLight(255, 220, 180,x*gridSize-5000-gridSize, height-gridSize*1, y*gridSize-5000);  
           world.pointLight(255, 220, 180,x*gridSize-5000+gridSize, height-gridSize*1 , y*gridSize-5000);  
+          //world.pointLight(255, 220, 180,x*gridSize-5000, height-gridSize*1 , y*gridSize-5000+gridSize);  
         popStyle();
-    }      
-      }  
+         
+      }
+      
+      if (c == cloud) {
+        world.pushStyle();
+        world.pushMatrix();
+        world.noStroke();
+        world.fill(white);
+        world.translate(x*gridSize-5000,height-gridSize*30,y*gridSize-5000);
+        world.box(gridSize);
+        world.popMatrix();
+        world.popStyle();
+      }
       
     }
   }

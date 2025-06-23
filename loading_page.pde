@@ -20,5 +20,6 @@ void loadingPage() {
   
   if (mouseReleased && myButton.isHovered()) {
     mode = game;
+    Trident.lives = 0;
   }
-}
+}  //<>//

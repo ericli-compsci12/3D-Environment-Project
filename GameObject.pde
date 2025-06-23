@@ -20,11 +20,6 @@ class GameObject {
   }
   
   void show() {
-    pushMatrix();
-    translate(loc.x,loc.y,loc.z);
-    fill(white);
-    stroke(100);
-    box(size,size,size);
-    popMatrix();
+    
   }
 }
