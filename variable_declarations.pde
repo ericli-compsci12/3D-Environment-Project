@@ -21,16 +21,31 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-//popup
-import javax.swing.JOptionPane;
+//import popup
 import java.awt.EventQueue;
+import javax.swing.JOptionPane;
+import java.awt.event.KeyEvent;
 
 //mouse wrapping
 Robot rbt;
 boolean skipFrame;
 
 //game variables
-boolean wkey, akey, skey, dkey,zerokey,ninekey, spacekey, shiftkey, sprintkey,zkey,xkey= false;
+boolean wkey = false;
+boolean akey = false; 
+boolean skey = false; 
+boolean dkey = false;
+boolean zerokey = false;
+boolean ninekey = false;
+boolean spacekey = false; 
+boolean shiftkey = false; 
+boolean sprintkey = false;
+boolean zkey = false;
+boolean xkey = false;
+boolean control = false;
+boolean eightkey = false;
+boolean mkey = true;
+
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;   
 
@@ -194,9 +209,46 @@ Bullet Trident;
 //sound
 Minim minim;
 AudioPlayer backgroundm;
+AudioPlayer walk;
+int m = 0;
 
 //mapping mniy
 int currentMiniY;
 
 //pop up window
 boolean dialogActive = false;
+String message = 
+    "<html>" +
+    "W/w/UP key - Forward<br>" +
+    " <br>" +
+    "S/s/DOWN key - Backward<br>" +
+    " <br>" +
+    "A/a/LEFT key - LEFT<br>" +
+    " <br>" +
+    "D/d/RIGHT key - Right<br>" +
+    " <br>" +
+    "Q/q key - Sprint<br>" +
+    " <br>" +
+    "M/m key - Background Music<br>" +
+    " <br>" +
+    "ENTER key - Ascend<br>" +
+    " <br>" +
+    "SHIFT key - Descend<br>" +
+    " <br>" +
+    "CONTROL key - Guide<br>" +
+    " <br>" +
+    "EXIT key - Exit<br>" +
+    " <br>" +
+    "Z/z key - Shoot<br>" +
+    " <br>" +
+    "X/x key - Teleport<br>" +
+    " <br>" +
+    "9 key - Night<br>" +
+    " <br>" +
+    "8 key - Loading Page<br>" +
+    " <br>" +
+    "0 key - Day<br>" +
+    " <br>" +
+    "1-7 key - Hotbar Selection<br>" +
+    " <br>" +
+    "</html>";

@@ -22,4 +22,26 @@ void loadingPage() {
     mode = game;
     Trident.lives = 0;
   }
+  
+  if (control && !dialogActive) {
+   cursor();
+    dialogActive = true;
+    control = false;
+    
+    new Thread(() -> {
+      // Create dialog on a separate thread
+      javax.swing.JFrame frame = new javax.swing.JFrame();
+      frame.setAlwaysOnTop(true);
+      
+    JOptionPane.showMessageDialog(frame, message, "KEY INPUTS",JOptionPane.INFORMATION_MESSAGE);
+
+    frame.dispose();
+      dialogActive = false;
+    }).start();
+  }
+  
+  textAlign(CENTER, CENTER);
+  fill(white);
+  textSize(30);
+  text("Press CONTROL Key To Learn More", width/2, height/2 + 480);
 }  //<>//

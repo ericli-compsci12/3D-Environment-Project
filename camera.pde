@@ -63,23 +63,39 @@
   if (wkey && canMoveForward()) {
     eyeX += cos(leftRightHeadAngle) * speed;
     eyeZ += sin(leftRightHeadAngle) * speed;
+    if (currentMiniY == 0 || currentMiniY == -1) {
+    walk.rewind();
+    walk.play();
+    }
   }
   if (skey && canMoveBackward()) {
     eyeX -= cos(leftRightHeadAngle) * speed;
     eyeZ -= sin(leftRightHeadAngle) * speed;
+    if (currentMiniY == 0 || currentMiniY == -1) {
+    walk.rewind();
+    walk.play();
+    }
   }
   if (akey && canMoveLeft()) { 
     eyeX -= cos(leftRightHeadAngle + radians(90)) * speed;
     eyeZ -= sin(leftRightHeadAngle + radians(90)) * speed;
+    if (currentMiniY == 0 || currentMiniY == -1) {
+    walk.rewind();
+    walk.play();
+    }
   }
   if (dkey && canMoveRight()) {
     eyeX += cos(leftRightHeadAngle + radians(90)) * speed;
     eyeZ += sin(leftRightHeadAngle + radians(90)) * speed;
+    if (currentMiniY == 0 || currentMiniY == -1) {
+    walk.rewind();
+    walk.play();
+    }
   }
   if (spacekey) {
     eyeY -= vertSpeed;
   } 
-  if (shiftkey) {
+  if (shiftkey && canMoveDown()) {
     eyeY += vertSpeed;
   }
 

@@ -166,7 +166,7 @@ void game () {
    
   HUD.beginDraw();
   HUD.clear();
- if (xkey && !dialogActive) {
+ if (xkey && !dialogActive && mode == game) {
    cursor();
     dialogActive = true;
     xkey = false;
@@ -197,6 +197,23 @@ void game () {
         }
       }
       frame.dispose();
+      dialogActive = false;
+    }).start();
+  }
+  
+  if (control && !dialogActive) {
+   cursor();
+    dialogActive = true;
+    control = false;
+    
+    new Thread(() -> {
+      // Create dialog on a separate thread
+      javax.swing.JFrame frame = new javax.swing.JFrame();
+      frame.setAlwaysOnTop(true);
+      
+    JOptionPane.showMessageDialog(frame, message, "Information",JOptionPane.INFORMATION_MESSAGE);
+
+    frame.dispose();
       dialogActive = false;
     }).start();
   }

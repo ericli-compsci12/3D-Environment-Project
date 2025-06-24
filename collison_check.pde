@@ -82,29 +82,28 @@ boolean canMoveForward() {
   mapy = int(fwz + 5000) / gridSize; 
   
   //println(currentMiniY);
-  
-  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 ) && (currentMiniY == 0)) {
+  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == cloud ) && (currentMiniY == 0)) {
     return true;
-  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white)) {
+  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white || map.get(mapx,mapy) == cloud)) {
     return true;
   }
-  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2)) {
+  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 2) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 3) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc
-  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 )) {
+  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -112,15 +111,15 @@ boolean canMoveForward() {
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt4|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || 
   map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == lc2 ||
-   map.get(mapx,mapy) == spp)) {
+   map.get(mapx,mapy) == spp || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -142,28 +141,28 @@ boolean canMoveLeft() {
   lz = eyeZ - sin(leftRightHeadAngle + radians(90))*200;
   mapx = int(lx + 5000) / gridSize; 
   mapy = int(lz + 5000) / gridSize;  
-  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 ) && (currentMiniY == 0)) {
+  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == cloud ) && (currentMiniY == 0)) {
     return true;
-  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white)) {
+  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white || map.get(mapx,mapy) == cloud)) {
     return true;
   }
-  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2)) {
+  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 2) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 3) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc
-  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 )) {
+  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -171,15 +170,15 @@ boolean canMoveLeft() {
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt4|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || 
   map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == lc2 ||
-   map.get(mapx,mapy) == spp)) {
+   map.get(mapx,mapy) == spp || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -201,28 +200,28 @@ boolean canMoveRight() {
   rz = eyeZ + sin(leftRightHeadAngle + radians(90))*200;
   mapx = int(rx + 5000) / gridSize; 
   mapy = int(rz + 5000) / gridSize;  
-  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 ) && (currentMiniY == 0)) {
+  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == cloud ) && (currentMiniY == 0)) {
     return true;
-  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white)) {
+  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white || map.get(mapx,mapy) == cloud)) {
     return true;
   }
-  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2)) {
+  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 2) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 3) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc
-  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 )) {
+  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -230,15 +229,15 @@ boolean canMoveRight() {
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt4|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || 
   map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == lc2 ||
-   map.get(mapx,mapy) == spp)) {
+   map.get(mapx,mapy) == spp || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -260,28 +259,28 @@ boolean canMoveBackward() {
   bwz = eyeZ - sin(leftRightHeadAngle)*200;
   mapx = int(bwx + 5000) / gridSize; 
   mapy = int(bwz + 5000) / gridSize;  
-  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 ) && (currentMiniY == 0)) {
+  if ((map.get(mapx,mapy) == white || map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == cloud ) && (currentMiniY == 0)) {
     return true;
-  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white)) {
+  } else if ((currentMiniY == -1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == white || map.get(mapx,mapy) == cloud)) {
     return true;
   }
-  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2)) {
+  else if ((currentMiniY == -2) && (map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 1) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 2) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt 
-  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc)) {
+  || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == cbs || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   else if ((currentMiniY == 3) && (map.get(mapx,mapy) == ho || map.get(mapx,mapy) == ho2 || map.get(mapx,mapy) == white 
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc
-  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 )) {
+  || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc || map.get(mapx,mapy) == lc2 || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -289,15 +288,15 @@ boolean canMoveBackward() {
   || map.get(mapx,mapy) == pumpk || map.get(mapx,mapy) == st || map.get(mapx,mapy) == st2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt 
   || map.get(mapx,mapy) == dt2 || map.get(mapx,mapy) == dt3|| map.get(mapx,mapy) == dt4|| map.get(mapx,mapy) == cbs  || map.get(mapx,mapy) == br || 
   map.get(mapx,mapy) == dia || map.get(mapx,mapy) == coalc || map.get(mapx,mapy) == gls || map.get(mapx,mapy) == wl || map.get(mapx,mapy) == lc3 || map.get(mapx,mapy) == lc2 ||
-   map.get(mapx,mapy) == spp)) {
+   map.get(mapx,mapy) == spp || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 5) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
-  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb)) {
+  else if ((currentMiniY == 6) && (map.get(mapx,mapy) != tb || map.get(mapx,mapy) == cloud)) {
     return true;
   }
   
@@ -311,15 +310,33 @@ boolean canMoveBackward() {
 
 }
 
-
-
-// Door helper functions
-boolean isDoorBlock(int gridX, int gridZ) {
-  color c = map.get(gridX, gridZ);
-  return c == lc3; // Only lc3 blocks have doors
+boolean canMoveDown() {
+  int mapx,mapy;
+  mapx = int(eyeX + 5000) / gridSize; 
+  mapy = int(eyeY + 5000) / gridSize;  
+  if (currentMiniY >= 0) {
+    return true;
+  }
+  else if (currentMiniY == -1 && map.get(mapx,mapy) == ho) {
+    return true;
+  }
+  else if (currentMiniY == -2 && map.get(mapx,mapy) == ho2) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 
-boolean isDoorOpen(int gridX, int gridZ) {
-  String doorKey = gridX + "," + gridZ;
-  return doorStates.getOrDefault(doorKey, false);
-}
+
+
+//// Door helper functions
+//boolean isDoorBlock(int gridX, int gridZ) {
+//  color c = map.get(gridX, gridZ);
+//  return c == lc3; // Only lc3 blocks have doors
+//}
+
+//boolean isDoorOpen(int gridX, int gridZ) {
+//  String doorKey = gridX + "," + gridZ;
+//  return doorStates.getOrDefault(doorKey, false);
+//}

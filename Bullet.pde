@@ -18,26 +18,26 @@ class Bullet extends GameObject {
         int hitY = 21-int((loc.y+5000)/gridSize); 
         if ((map.get(hitx,hity) == white || map.get(hitx,hity) == ho || map.get(hitx,hity) == ho2 || map.get(hitx,hity) == cbs || map.get(hitx,hity) == lc3 ) && (hitY == 0)) {
    loc.add(dir);
-  } else if ((hitY == -1) && (map.get(hitx,hity) == ho || map.get(hitx,hity) == ho2 || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == white)) {
+  } else if ((hitY == -1) && (map.get(hitx,hity) == ho || map.get(hitx,hity) == ho2 || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == white || map.get(hitx,hity) == cloud)) {
     loc.add(dir);
   }
-  else if ((hitY == -2) && (map.get(hitx,hity) == ho2)) {
+  else if ((hitY == -2) && (map.get(hitx,hity) == ho2 || map.get(hitx,hity) == cloud)) {
    loc.add(dir);
   }
   else if ((hitY == 1) && (map.get(hitx,hity) == ho || map.get(hitx,hity) == ho2 || map.get(hitx,hity) == white 
   || map.get(hitx,hity) == pumpk || map.get(hitx,hity) == st || map.get(hitx,hity) == dt 
-  || map.get(hitx,hity) == cbs || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == br || map.get(hitx,hity) == dia || map.get(hitx,hity) == coalc)) {
+  || map.get(hitx,hity) == cbs || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == br || map.get(hitx,hity) == dia || map.get(hitx,hity) == coalc|| map.get(hitx,hity) == cloud)) {
    loc.add(dir);
   }
   else if ((hitY == 2) && (map.get(hitx,hity) == ho || map.get(hitx,hity) == ho2 || map.get(hitx,hity) == white 
   || map.get(hitx,hity) == pumpk || map.get(hitx,hity) == st || map.get(hitx,hity) == st2 || map.get(hitx,hity) == dt 
-  || map.get(hitx,hity) == dt2 || map.get(hitx,hity) == cbs || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == br || map.get(hitx,hity) == dia || map.get(hitx,hity) == coalc)) {
+  || map.get(hitx,hity) == dt2 || map.get(hitx,hity) == cbs || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == br || map.get(hitx,hity) == dia || map.get(hitx,hity) == coalc || map.get(hitx,hity) == cloud)) {
     loc.add(dir);
   }
   else if ((hitY == 3) && (map.get(hitx,hity) == ho || map.get(hitx,hity) == ho2 || map.get(hitx,hity) == white 
   || map.get(hitx,hity) == pumpk || map.get(hitx,hity) == st || map.get(hitx,hity) == st2 || map.get(hitx,hity) == dt3|| map.get(hitx,hity) == dt 
   || map.get(hitx,hity) == dt2 || map.get(hitx,hity) == dt3|| map.get(hitx,hity) == cbs  || map.get(hitx,hity) == br || map.get(hitx,hity) == dia || map.get(hitx,hity) == coalc
-  || map.get(hitx,hity) == gls || map.get(hitx,hity) == wl || map.get(hitx,hity) == lc || map.get(hitx,hity) == lc2 )) {
+  || map.get(hitx,hity) == gls || map.get(hitx,hity) == wl || map.get(hitx,hity) == lc || map.get(hitx,hity) == lc2 || map.get(hitx,hity) == cloud)) {
    loc.add(dir);
   }
   
@@ -45,15 +45,15 @@ class Bullet extends GameObject {
   || map.get(hitx,hity) == pumpk || map.get(hitx,hity) == st || map.get(hitx,hity) == st2 || map.get(hitx,hity) == dt3|| map.get(hitx,hity) == dt 
   || map.get(hitx,hity) == dt2 || map.get(hitx,hity) == dt3|| map.get(hitx,hity) == dt4|| map.get(hitx,hity) == cbs  || map.get(hitx,hity) == br || 
   map.get(hitx,hity) == dia || map.get(hitx,hity) == coalc || map.get(hitx,hity) == gls || map.get(hitx,hity) == wl || map.get(hitx,hity) == lc3 || map.get(hitx,hity) == lc2 ||
-   map.get(hitx,hity) == spp)) {
+   map.get(hitx,hity) == spp || map.get(hitx,hity) == cloud)) {
    loc.add(dir);  
   }
   
-  else if ((hitY == 5) && (map.get(hitx,hity) != tb)) {
+  else if ((hitY == 5) && (map.get(hitx,hity) != tb || map.get(hitx,hity) == cloud)) {
     loc.add(dir);
   }
   
-  else if ((hitY == 6) && (map.get(hitx,hity) != tb)) {
+  else if ((hitY == 6) && (map.get(hitx,hity) != tb || map.get(hitx,hity) == cloud)) {
     loc.add(dir);
   }
   

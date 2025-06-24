@@ -80,8 +80,8 @@ void setup () {
   hotbar = loadImage("hotbar.png");
   hotbarselector = loadImage("hotbarselector.png");
   trident = loadImage("Trident.png");
-  sun = loadImage("sun.png");
-  moon = loadImage("moon.jpg");
+  //sun = loadImage("sun.png");
+  //moon = loadImage("moon.jpg");
  
   
   // Initialize button (text, x, y, w, h, normalColor, highlightColor)
@@ -98,9 +98,9 @@ void setup () {
   
   // Load all audio files
   backgroundm = minim.loadFile("nop.mp3");
+  walk = minim.loadFile("walking sound.mp3");
   
-  //loop the song
-  backgroundm.loop();
+ 
   
   if (map == null) {
     println("ERROR: Map not found!");
@@ -110,6 +110,7 @@ void setup () {
 }
 
 
+backgroundm.loop();
 
 }
 
@@ -226,6 +227,10 @@ void draw() {
     println("Toggled door at: " + gridX + "," + gridY);
   }
   mouseReleased = false;
+}
+
+if (eightkey) {
+ mode = loading; 
 }
 }
 
